@@ -10,7 +10,7 @@ prices = df["Close"].values
 dates = df["Date"].tolist()  # ✅ datetime을 문자열로 변환
 
 # ✅ 전략 실행 (손절 후 재매수 & DCA)
-strategy_names = ["stop_loss_rebuy"]
+strategy_names = ["stop_loss_rebuy", "dca"]
 results = {}
 
 for name in strategy_names:
