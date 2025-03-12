@@ -67,21 +67,21 @@ class StopLossRebuyStrategy(BaseStrategy):
 
                     print(
                         f"[{date}] 🟥 일부 손절 매도 | 가격: ${price:.2f}, 수량: {shares_to_sell}주 | "
-                        f"매도 금액: ${sell_value:,.2f} | 손익: {profit:+,.2f} USD"
+                        f"매도 금액: ${sell_value:,.2f} | 손익: {profit:+,.2f} USD | 남은 예수금: ${self.cash_balance:,.2f}"
                     )
 
             # ✅ 추가 매수 조건 (일부 매수)
             elif price >= rebuy_price and self.cash_balance > 0:
-                shares_to_buy = int((self.cash_balance / price) * self.buy_ratio)  # 매수 수량
+                available_cash = self.cash_balance * self.buy_ratio  # 매수 가능 금액
+                shares_to_buy = int(available_cash // price)  # 매수 가능한 주식 수
                 buy_value = shares_to_buy * price  # 총 매수 금액
 
                 if shares_to_buy > 0 and buy_value <= self.cash_balance:
                     self.cash_balance -= buy_value  # 예수금 감소
+                    new_avg_price = ((self.avg_price * shares_held) + buy_value) / (shares_held + shares_to_buy)  
                     shares_held += shares_to_buy  # 보유 주식 증가
 
-                    # 평균 매수가 갱신
-                    self.avg_price = ((self.avg_price * (shares_held - shares_to_buy)) + buy_value) / shares_held
-
+                    self.avg_price = new_avg_price  # 평균 매수가 업데이트
                     stop_price = self.avg_price * (1 + self.stop_loss_pct / 100)  # 손절가 재설정
                     rebuy_price = self.avg_price * (1 + self.rebuy_gain_pct / 100)  # 재매수가 재설정
 
