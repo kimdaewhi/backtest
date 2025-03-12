@@ -6,7 +6,7 @@ class StopLossRebuyStrategy(BaseStrategy):
 
     @property
     def chart_title(self) -> str:
-        return "Stop Loss & Rebuy Strategy"
+        return "Stop Loss & Rebuy"
 
     def __init__(
         self, initial_investment, avg_price, shares, cash_balance,

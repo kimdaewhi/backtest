@@ -41,7 +41,7 @@ fig.add_trace(go.Scatter(
 
 # ✅ 수익률 (%) 계산 및 추가
 initial_investment = Config.SHARES * Config.AVG_PRICE  # 초기 투자금 기준
-profit_rate = ((results["Stop Loss & Rebuy Strategy"] - initial_investment) / initial_investment) * 100
+profit_rate = ((results["Stop Loss & Rebuy"] - initial_investment) / initial_investment) * 100
 
 fig.add_trace(go.Scatter(
     x=dates, y=profit_rate,
