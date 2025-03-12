@@ -5,7 +5,7 @@ from strategy_factory import StrategyFactory
 from config import Config
 
 # 1. 주가 데이터 로드
-df = load_stock_data()
+df = load_stock_data(Config.TICKER, Config.START_DATE, Config.END_DATE)
 prices = df["Close"].values
 dates = df["Date"].tolist()  # ✅ datetime을 문자열로 변환
 
