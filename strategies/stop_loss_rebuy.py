@@ -4,6 +4,10 @@ from strategies.base_strategy import BaseStrategy
 class StopLossRebuyStrategy(BaseStrategy):
     """손절 후 일정 수준 반등하면 재매수하는 전략"""
 
+    @property
+    def chart_title(self) -> str:
+        return "Stop Loss & Rebuy Strategy"
+
     def __init__(self, initial_investment, avg_price, shares, stop_loss_pct=-10, rebuy_gain_pct=5):
         self.initial_investment = initial_investment
         self.avg_price = avg_price  # 초기 매수가

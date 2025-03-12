@@ -22,7 +22,7 @@ for name in strategy_names:
         avg_price=Config.AVG_PRICE,                     # 평균 매수가
         shares=Config.SHARES                            # 보유 주식 수량
     )
-    results[name] = strategy.run(prices)            # 전략 실행 결과를 Dictionary에 저장
+    results[strategy.chart_title] = strategy.run(prices)            # 전략 실행 결과를 Dictionary에 저장
 
 # 4. Plotly 그래프 시각화(Plotly 사용법?)
 fig = go.Figure()

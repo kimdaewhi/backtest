@@ -4,6 +4,10 @@ from strategies.base_strategy import BaseStrategy
 class DcaStrategy(BaseStrategy):
     """Dollar-Cost Averaging (DCA) 전략"""
 
+    @property
+    def chart_title(self) -> str:
+        return "DCA Strategy"
+
     def __init__(self, initial_investment, avg_price, shares, num_buys=4, dip_threshold=5, additional_funds_per_buy=1000):
         """
         DCA 전략 초기화
