@@ -11,3 +11,4 @@ class Config:
     INITIAL_INVESTMENT = float(os.getenv("INITIAL_INVESTMENT", "5000")) # 초기 투자금
     AVG_PRICE = float(os.getenv("AVG_PRICE", "188.3962"))             # 평균 매수가
     SHARES = int(os.getenv("SHARES", "42"))                          # 보유 주식 수량
+    CASH_BALANCE = float(os.getenv("CASH_BALANCE", "0"))            # 현금 잔고

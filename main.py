@@ -20,7 +20,8 @@ for name in strategy_names:
         name, 
         initial_investment=Config.INITIAL_INVESTMENT,   # 초기 투자금
         avg_price=Config.AVG_PRICE,                     # 평균 매수가
-        shares=Config.SHARES                            # 보유 주식 수량
+        shares=Config.SHARES,                           # 보유 주식 수량
+        cash_balance=Config.CASH_BALANCE                # 현금 잔고
     )
     results[strategy.chart_title] = strategy.run(prices)            # 전략 실행 결과를 Dictionary에 저장
 

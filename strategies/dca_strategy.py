@@ -8,12 +8,13 @@ class DcaStrategy(BaseStrategy):
     def chart_title(self) -> str:
         return "DCA Strategy"
 
-    def __init__(self, initial_investment, avg_price, shares, num_buys=4, dip_threshold=5, additional_funds_per_buy=1000):
+    def __init__(self, initial_investment, avg_price, shares, cash_balance, num_buys=4, dip_threshold=5, additional_funds_per_buy=1000):
         """
         DCA 전략 초기화
         :param initial_investment: 초기 투자금
         :param avg_price: 평균 매수가
         :param shares: 초기 보유 주식 수량
+        :param cash_balance: 현금 잔고
         :param num_buys: 추가 매수 횟수
         :param dip_threshold: 추가 매수할 주가 하락률 기준 (%)
         :param additional_funds_per_buy: 매수할 때마다 추가 투자할 예수금
