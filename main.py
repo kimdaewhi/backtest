@@ -40,6 +40,31 @@ fig.update_layout(
 st.title(f"Backtest Results({Config.TICKER})")
 st.plotly_chart(fig, use_container_width=True)
 
+
+# ✅ 4. 기본 정보 테이블 출력 (차트 아래)
+st.subheader("📊 기본 정보")
+
+curr_price = 144.18
+
+# ✅ 현재 평가 금액 및 손익 계산
+current_value = Config.SHARES * curr_price
+profit_loss = current_value - (Config.SHARES * Config.AVG_PRICE)
+profit_loss_pct = (profit_loss / (Config.SHARES * Config.AVG_PRICE)) * 100
+
+# ✅ DataFrame으로 변환 후 출력
+basic_info = {
+    "항목": ["종목", "평균 매수가", "현재가", "수량", "평가금액", "손익"],
+    "값": [
+        Config.TICKER,
+        f"${Config.AVG_PRICE:.2f}",
+        f"${curr_price:.2f}",
+        f"{Config.SHARES}주",
+        f"${current_value:,.2f}",
+        f"{profit_loss:+,.2f} USD ({profit_loss_pct:+.2f}%)"
+    ]
+}
+st.dataframe(basic_info)
+
 # ✅ 전략별 백테스트 성과 지표 테이블
 st.subheader("Backtest Performance Metrics")
 st.dataframe(results)
