@@ -29,6 +29,13 @@ fig = go.Figure()
 for name, values in results.items():
     fig.add_trace(go.Scatter(x=dates, y=values, mode="lines", name=name))
 
+# ✅ 축 제목 추가
+fig.update_layout(
+    xaxis_title="날짜",  # X축 제목
+    yaxis_title="평가 금액",  # Y축 제목
+    legend_title="전략 (Strategy)"
+)
+
 st.title(f"Backtest Results({Config.TICKER})")
 st.plotly_chart(fig, use_container_width=True)
 
