@@ -10,7 +10,7 @@ prices = df["Close"].values
 dates = df["Date"].tolist()  # ✅ datetime을 문자열로 변환
 
 # 2. 전략 실행 (손절 후 재매수 & DCA), 다수의 전략 실행 가능
-strategy_names = ["stop_loss_rebuy", "dca"]
+strategy_names = ["StopLossRebuyStrategy", "DcaStrategy"]
 results = {}
 
 # 3. 전략 오브젝트 생성 및 실행
@@ -23,7 +23,6 @@ for name in strategy_names:
         shares=Config.SHARES                            # 보유 주식 수량
     )
     results[name] = strategy.run(prices)            # 전략 실행 결과를 Dictionary에 저장
-
 
 # 4. Plotly 그래프 시각화(Plotly 사용법?)
 fig = go.Figure()
