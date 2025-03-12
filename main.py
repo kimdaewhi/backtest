@@ -32,6 +32,7 @@ for name, values in results.items():
 
 # ✅ 축 제목 추가
 fig.update_layout(
+    title=f"{Config.START_DATE} ~ {Config.END_DATE}",
     xaxis_title="날짜",  # X축 제목
     yaxis_title="평가 금액",  # Y축 제목
     legend_title="전략 (Strategy)"
@@ -41,10 +42,10 @@ st.title(f"Backtest Results({Config.TICKER})")
 st.plotly_chart(fig, use_container_width=True)
 
 
-# ✅ 4. 기본 정보 테이블 출력 (차트 아래)
+# ✅ 기본 정보 테이블 출력 (차트 아래)
 st.subheader("📊 기본 정보")
 
-curr_price = 144.18
+curr_price = 39.3
 
 # ✅ 현재 평가 금액 및 손익 계산
 current_value = Config.SHARES * curr_price
