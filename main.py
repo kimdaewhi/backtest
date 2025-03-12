@@ -30,7 +30,7 @@ fig = go.Figure()
 for name, values in results.items():
     fig.add_trace(go.Scatter(x=dates, y=values, mode="lines", name=name))
 
-st.title(f"Backtest Results{Config.TICKER}")
+st.title(f"Backtest Results({Config.TICKER})")
 st.plotly_chart(fig, use_container_width=True)
 
 # ✅ 전략별 백테스트 성과 지표 테이블
