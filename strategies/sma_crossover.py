@@ -1,7 +1,7 @@
 import backtrader as bt
 
 class SMACrossover(bt.Strategy):
-    params = (("short_period", 10), ("long_period", 50))
+    params = dict(short_period=10, long_period=50)  # ✅ 튜플 → 딕셔너리 변경!
 
     def __init__(self):
         self.sma_short = bt.indicators.SimpleMovingAverage(period=self.params.short_period)
