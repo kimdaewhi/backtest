@@ -1,11 +1,16 @@
-import os
-from dotenv import load_dotenv
-
-# .env 파일 로드
-load_dotenv()
-
-# 환경 변수 불러오기
-TICKER = os.getenv("TICKER", "AAPL")
-START_DATE = os.getenv("START_DATE", "2022-01-01")
-END_DATE = os.getenv("END_DATE", "2024-01-01")
-INITIAL_CASH = float(os.getenv("INITIAL_CASH", 10000))
+STRATEGY_CONFIGS = {
+    "sma_crossover": {
+        "ticker": "ORCL",
+        "start_date": "2018-01-01",
+        "end_date": "2018-12-31",
+        "initial_cash": 1500,
+        "params": {"short_period": 10, "long_period": 50}
+    },
+    "rsi_strategy": {
+        "ticker": "TSLA",
+        "start_date": "2020-01-01",
+        "end_date": "2024-01-01",
+        "initial_cash": 5000,
+        "params": {"rsi_period": 14, "rsi_overbought": 70, "rsi_oversold": 30}
+    },
+}
