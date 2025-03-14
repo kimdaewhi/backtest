@@ -21,7 +21,7 @@ def run_backtest(strategy_name):
 
     df = fetch_data(ticker, start_date, end_date)
     data = bt.feeds.PandasData(dataname=df)
-    
+
     strategy = get_strategy(strategy_name)
     if strategy is None:
         print(f"❌ {strategy_name} 전략을 찾을 수 없습니다.")
@@ -33,20 +33,22 @@ def run_backtest(strategy_name):
     # 🔥 실행 후 전략 객체 가져오기
     strat = cerebro.run()[0]  # ✅ 실행 후 전략 객체 받아오기
 
-    # 📊 체결된 거래 내역 가져오기
+    # 📊 체결된 거래 내역 가져오기 (변경됨!)
     trades = []
-    for trade in strat._trades[None]:  # ✅ 현재 포지션과 관련된 모든 거래
-        if trade.status == trade.Completed:
+    if hasattr(strat, "trades") and strat.trades:  # ✅ 전략이 거래 데이터를 저장하고 있는 경우만
+        for trade in strat.trades:
             trades.append({
-                "date": bt.num2date(trade.executed.dt),
-                "price": trade.executed.price,
-                "type": "buy" if trade.isbuy() else "sell"
+                # "date": bt.num2date(trade["date"]),  # ✅ datetime 변환 필수
+                "date": trade["date"], 
+                "price": trade["price"],
+                "type": trade["type"]
             })
 
+    # ✅ SMA 계산
     short_sma = df['close'].rolling(strategy_params['short_period']).mean()
     long_sma = df['close'].rolling(strategy_params['long_period']).mean()
 
-    # 📊 커스텀 차트 표시
+    # 📊 차트 표시
     plot_backtest_results(df, trades, short_sma, long_sma)
 
 if __name__ == "__main__":

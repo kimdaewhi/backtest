@@ -38,8 +38,15 @@ def plot_backtest_results(df, trades, short_sma, long_sma):
 
     # ✅ Trade Signals (컬러 변경 & 투명도 조절)
     for trade in trades:
-        color, marker = ('#6ABF69', '^') if trade['type'] == 'buy' else ('#E57373', 'v')
-        ax[0].scatter(trade['date'], trade['price'], marker=marker, color=color, s=75, edgecolors='black', linewidth=0.6, alpha=0.8)
+        if trade["type"] == "buy":
+            ax[0].scatter(trade["date"], trade["price"], 
+                        marker="^", color="#4CAF50", s=100,  # ✅ 더 부드러운 초록색
+                        edgecolors="#555", linewidth=1.2, alpha=0.9, zorder=3)
+            
+        elif trade["type"] == "sell":
+            ax[0].scatter(trade["date"], trade["price"], 
+                        marker="v", color="#E53935", s=100,  # ✅ 부드러운 빨강색
+                        edgecolors="#555", linewidth=1.2, alpha=0.9, zorder=3)
 
     ax[0].legend(loc="upper left", fontsize=10, frameon=False)
     ax[0].set_title("주가 & 이동평균선", fontsize=11, fontweight="medium", pad=10)
