@@ -24,7 +24,7 @@ def smooth_series(series, window=7, polyorder=3):
     return savgol_filter(series, window_length=window, polyorder=polyorder)
 
 def plot_backtest_results(df, trades, short_sma, long_sma):
-    """백테스트 결과 시각화 (자동 Minor Tick 적용)"""
+    """백테스트 결과 시각화 (블로그 방식의 Minor Tick 적용)"""
     fig, ax = plt.subplots(3, 1, figsize=(16, 9), gridspec_kw={"height_ratios": [3, 1, 1]})
 
     # ✅ 1️⃣ 주가 & 이동평균선
@@ -55,17 +55,20 @@ def plot_backtest_results(df, trades, short_sma, long_sma):
     ax[2].set_title("누적 수익률", fontsize=11, fontweight="medium", pad=10)
     ax[2].set_ylabel("수익률 (%)", fontsize=10, fontweight="medium")
 
-    # ✅ X축 Major(월 단위) & Minor(자동 설정) Tick 설정
+    # ✅ X축 Major/Minor Tick 설정 (균등 분배)
     for axis in ax:
-        axis.xaxis.set_major_locator(mdates.MonthLocator())  # ✅ Major Tick: 월 단위
+        # ✔ Major Tick: 매월 15일 (중간 날짜)
+        axis.xaxis.set_major_locator(mdates.MonthLocator(bymonthday=15))
         axis.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
 
-        axis.xaxis.set_minor_locator(mdates.AutoDateLocator())  # ✅ Minor Tick 자동 설정 (Matplotlib 기능)
-        axis.xaxis.set_minor_formatter(mdates.DateFormatter("%d"))  # ✅ Minor Label: "일 (Day)" 형식
+        # ✔ Minor Tick: 7일 간격 (모든 월에서 균일한 분배)
+        axis.xaxis.set_minor_locator(mdates.DayLocator(interval=7))
+        axis.xaxis.set_minor_formatter(mdates.DateFormatter("%d"))
 
-        # ✅ Minor Tick Label을 위쪽으로 이동 + 색상 변경
-        axis.xaxis.set_tick_params(which="minor", pad=10, labeltop=True, labelbottom=False)
-        plt.setp(axis.xaxis.get_minorticklabels(), fontsize=7, fontweight="light", color="gray")
+        # ✔ Minor Label을 X축 위쪽으로 이동 & 색상 변경
+        axis.xaxis.set_tick_params(which="minor", pad=10, labeltop=False, labelbottom=True)
+        plt.setp(axis.xaxis.get_minorticklabels(), fontsize=8, fontweight="light", color="gray")
+
 
     plt.subplots_adjust(hspace=0.4)
     plt.show()
