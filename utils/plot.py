@@ -3,53 +3,62 @@ import matplotlib.dates as mdates
 import pandas as pd
 import matplotlib.font_manager as fm
 
-plt.rcParams['font.family'] = 'NanumGothic'  # Windows: 맑은 고딕
-plt.rcParams['axes.unicode_minus'] = False  # ✅ 음수(-) 기호 깨짐 방지
+# ✅ 기본 폰트를 'NanumGothic'으로 변경
+plt.rcParams['font.family'] = 'NanumGothic'
+plt.rcParams['axes.unicode_minus'] = False
 
-plt.style.use('seaborn-v0_8-darkgrid')  # ✅ 스타일 변경
+plt.style.use('seaborn-v0_8-bright')
 
 def plot_backtest_results(df, trades, short_sma, long_sma):
-    """ 백테스트 결과를 보기 좋은 차트로 시각화 """
-    fig, ax = plt.subplots(3, 1, figsize=(16, 10), gridspec_kw={'height_ratios': [3, 1, 1]})
-    
-    # 1️⃣ 가격 차트 + 이동평균선
-    ax[0].plot(df.index, df['close'], label="종가 (Closing Price)", color="#333333", linewidth=2)
-    ax[0].plot(df.index, short_sma, label="단기 이동평균선 (SMA10)", color="#FF5733", linestyle="--", linewidth=2, alpha=0.8)
-    ax[0].plot(df.index, long_sma, label="장기 이동평균선 (SMA50)", color="#338AFF", linestyle="--", linewidth=2, alpha=0.8)
+    """ Backtest Visualization - Clean & Modern """
+    fig, ax = plt.subplots(3, 1, figsize=(16, 9), gridspec_kw={'height_ratios': [3, 1, 1]})
 
-    # 매매 신호 표시
+    # ✅ 1️⃣ Price & SMA (라인 두께 조정)
+    ax[0].plot(df.index, df['close'], label="Price", color="#444", linewidth=1.2, alpha=0.9)  
+    ax[0].plot(df.index, short_sma, label="SMA10", color="#FF6F61", linestyle="--", linewidth=1.5, alpha=0.8)
+    ax[0].plot(df.index, long_sma, label="SMA50", color="#5B84B1", linestyle="--", linewidth=1.5, alpha=0.8)
+
+    # ✅ Trade Signals (컬러 변경 & 투명도 조절)
     for trade in trades:
-        if trade['type'] == 'buy':
-            ax[0].scatter(trade['date'], trade['price'], marker='^', color='#28A745', s=150, edgecolors='black', zorder=3, label="매수 신호 (BUY)")
-            ax[0].annotate("매수", (trade['date'], trade['price']), textcoords="offset points", xytext=(-10,10), ha='center', fontsize=10, color="green")
-        elif trade['type'] == 'sell':
-            ax[0].scatter(trade['date'], trade['price'], marker='v', color='#DC3545', s=150, edgecolors='black', zorder=3, label="매도 신호 (SELL)")
-            ax[0].annotate("매도", (trade['date'], trade['price']), textcoords="offset points", xytext=(-10,-15), ha='center', fontsize=10, color="red")
+        color, marker = ('#6ABF69', '^') if trade['type'] == 'buy' else ('#E57373', 'v')
+        ax[0].scatter(trade['date'], trade['price'], marker=marker, color=color, s=75, edgecolors='black', linewidth=0.6, alpha=0.8)
 
-    ax[0].legend(loc="upper left", fontsize=12)
-    ax[0].set_title("📈 주가 및 이동평균선", fontsize=14, fontweight="bold")
-    ax[0].set_ylabel("가격 (₩)", fontsize=12)
-    ax[0].grid(True, linestyle="--", alpha=0.5)
+    ax[0].legend(loc="upper left", fontsize=10, frameon=False)
+    ax[0].set_title("Price & Moving Averages", fontsize=12, fontweight="medium", pad=10)
+    ax[0].set_ylabel("Price ($)", fontsize=10, fontweight="medium")
+    ax[0].spines['top'].set_visible(False)
+    ax[0].spines['right'].set_visible(False)
+    ax[0].spines['left'].set_color("#999")  
+    ax[0].spines['bottom'].set_color("#999")  
 
-    # 2️⃣ 거래량 차트
-    ax[1].bar(df.index, df['volume'], color="#6C757D", alpha=0.7, width=0.8)
-    ax[1].set_title("📊 거래량 (Trading Volume)", fontsize=14, fontweight="bold")
-    ax[1].set_ylabel("거래량", fontsize=12)
-    ax[1].grid(True, linestyle="--", alpha=0.5)
+    # ✅ 2️⃣ Volume
+    ax[1].bar(df.index, df['volume'], color="gray", alpha=0.4, width=0.8)
+    ax[1].set_title("Volume", fontsize=12, fontweight="medium", pad=10)
+    ax[1].set_ylabel("Volume", fontsize=10, fontweight="medium")
+    ax[1].spines['top'].set_visible(False)
+    ax[1].spines['right'].set_visible(False)
+    ax[1].spines['left'].set_color("#999")
+    ax[1].spines['bottom'].set_color("#999")
 
-    # 3️⃣ 누적 수익률 차트
-    pnl = df['close'].pct_change().cumsum()  # 누적 수익률 계산
-    ax[2].plot(df.index, pnl, label="누적 수익률 (Cumulative PnL)", color="#9C27B0", linewidth=2)
-    ax[2].axhline(0, linestyle="--", color="black", alpha=0.5)
-    ax[2].set_title("💰 누적 수익률 (Cumulative PnL)", fontsize=14, fontweight="bold")
-    ax[2].set_ylabel("수익률 (%)", fontsize=12)
-    ax[2].grid(True, linestyle="--", alpha=0.5)
+    # ✅ 3️⃣ Cumulative PnL (라인 두께 조정)
+    pnl = df['close'].pct_change().cumsum()
+    ax[2].plot(df.index, pnl, label="PnL", color="#9C27B0", linewidth=1.8, alpha=0.9)
+    ax[2].axhline(0, linestyle="--", color="#666", alpha=0.5)  
+    ax[2].set_title("Cumulative PnL", fontsize=12, fontweight="medium", pad=10)
+    ax[2].set_ylabel("PnL (%)", fontsize=10, fontweight="medium")
+    ax[2].spines['top'].set_visible(False)
+    ax[2].spines['right'].set_visible(False)
+    ax[2].spines['left'].set_color("#999")
+    ax[2].spines['bottom'].set_color("#999")
 
-    # X축 포맷 조정
+    # ✅ X축 라벨 기울기 제거 & 폰트 크기 줄이기
     for axis in ax:
         axis.xaxis.set_major_locator(mdates.MonthLocator())
         axis.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
-        plt.setp(axis.xaxis.get_majorticklabels(), rotation=45, fontsize=10)
+        plt.setp(axis.xaxis.get_majorticklabels(), rotation=0, fontsize=9, fontweight="light")
+
+    # ✅ 차트 간 간격 조정
+    plt.subplots_adjust(hspace=0.4)
 
     plt.tight_layout()
     plt.show()
